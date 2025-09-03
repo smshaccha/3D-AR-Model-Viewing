@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Showcase</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>My Products</h1>
+    </header>
+    <section id="product-list">
+        <div class="product-card" data-product-id="1">
+            <img src="product1-thumb.jpg" alt="Product 1">
+            <h2>Product 1</h2>
+            <p>Short description.</p>
+        </div>
+        <div class="product-card" data-product-id="2">
+            <img src="product2-thumb.jpg" alt="Product 2">
+            <h2>Product 2</h2>
+            <p>Short description.</p>
+        </div>
+        <div class="product-card" data-product-id="3">
+            <img src="product3-thumb.jpg" alt="Product 3">
+            <h2>Product 3</h2>
+            <p>Short description.</p>
+        </div>
+    </section>
+    <!-- ekhane prodcuct e dhukar por view 3D button er function -->
+    <section id="product-details" style="display: none;">
+        <h2 id="product-title"></h2>
+        <p id="product-specs"></p>
+        <button id="buy-button">Buy Now</button>
+        <button id="view-3d-button">View in 3D</button>
+    </section>
+    <!-- model viewer -->
+    <div id="3d-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <model-viewer id="model-viewer" auto-rotate camera-controls touch-action="pan-y" ar ar-modes="webxr scene-viewer quick-look" poster="loading-poster.jpg">
+            <button slot="ar-button" id="ar-button">
+                Activate AR Viewing
+            </button>
+            <div class="slider">
+                <div class="slides">
+                <button class="slide selected" onclick="switchSrc(this, 'Chair')" style="background-image: url('../../models/untitled.webp');"></button>
+                <button class="slide" onclick="switchSrc(this, 'Mixer')" style="background-image: url('../../models/Mixer.webp');"></button>
+                </div>
+            </div> 
+            </model-viewer>
+            <script type="module">
+                const modelViewer = document.querySelector("model-viewer");
+
+                window.switchSrc = (element, name) => {
+                  const base = "../../models/" + name;
+                  modelViewer.src = base + '.glb';
+                  modelViewer.poster = base + '.webp';
+                  const slides = document.querySelectorAll(".slide");
+                  slides.forEach((element) => {element.classList.remove("selected");});
+                  element.classList.add("selected");
+                };
+
+                document.querySelector(".slider").addEventListener('beforexrselect', (ev) => {
+                  // Keep slider interactions from affecting the XR scene.
+                  ev.preventDefault();
+                });
+            </script>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
